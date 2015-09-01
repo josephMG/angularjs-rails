@@ -25,7 +25,8 @@ receta.config([ '$routeProvider',
     ($routeProvider)->
       $routeProvider
         .when('/', 
-          templateUrl: "<%= asset_path('templates/index.html') %>"
+#          templateUrl: "<%= asset_path('templates/index.html') %>"
+          templateUrl: "index.html"
           controller: 'RecipesController'
         )
 ])
