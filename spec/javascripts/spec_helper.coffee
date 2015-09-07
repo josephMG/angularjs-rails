@@ -43,6 +43,3 @@ beforeEach ->
         result
     }
 
-afterEach ->
-  httpBackend.verifyNoOutstandingExpectation()
-  httpBackend.verifyNoOutstandingRequest()

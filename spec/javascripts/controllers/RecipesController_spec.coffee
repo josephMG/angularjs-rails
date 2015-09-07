@@ -25,6 +25,11 @@ describe "RecipesController", ->
                                 $scope: scope
                                 $location: location)
     )
+  
+  afterEach ->
+    httpBackend.verifyNoOutstandingExpectation()
+    httpBackend.verifyNoOutstandingRequest()
+  
   beforeEach(module("receta"))
 
   describe 'controller initialization', ->
