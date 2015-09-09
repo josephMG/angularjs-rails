@@ -2,9 +2,10 @@ describe "RecipesController", ->
   scope       = null
   ctrl        = null
   routeParams = null
-  location = null
+  location    = null
   httpBackend = null
-  
+
+  flash       = null
   recipeId = 42
 
   fakeRecipe = 
@@ -13,13 +14,18 @@ describe "RecipesController", ->
     instruections: "Pierce potato with fork, nuke for 20 minutes"
   
   setupController2 = (recipeExists = true) ->
-    inject(($location,$routeParams, $rootScope, $httpBackend, $controller) -> 
+    inject(($location,$routeParams, $rootScope, $httpBackend, $controller, _flash_) -> 
+      ######
+      #because this component isn't provided by Angular, its name —for dependency injection purposes—is also flash
+      #so using _flash_ 
+      ######
+      
       scope       = $rootScope.$new()
       httpBackend = $httpBackend
       location = $location
       routeParams = $routeParams
       routeParams.recipeId = recipeId
-      
+      flash = _flash_
       request = new RegExp("\/recipes/#{recipeId}")
       
       results = if recipeExists
@@ -71,7 +77,7 @@ describe "RecipesController", ->
         httpBackend.flush()
         expect(scope.recipe).toBe(null)
         #what else?!
-
+        expect(flash.error).toBe("There is no recipe with ID #{recipeId}")
     describe 'when no keywords present', ->
       beforeEach ->
         setupController(null,null)

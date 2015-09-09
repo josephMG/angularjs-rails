@@ -1,7 +1,7 @@
 controllers = angular.module('controllers')
 
-controllers.controller("RecipesController", [ '$scope', '$routeParams', '$location', '$resource',
-  ($scope,$routeParams,$location,$resource)->
+controllers.controller("RecipesController", [ '$scope', '$routeParams', '$location', '$resource', 'flash'
+  ($scope,$routeParams,$location,$resource, flash)->
     $scope.search = (keywords)->  $location.path("/").search('keywords',keywords)
     Recipe = $resource('/recipes/:recipeId', { recipeId: "@id", format: 'json' })
     
@@ -10,7 +10,10 @@ controllers.controller("RecipesController", [ '$scope', '$routeParams', '$locati
     else if $routeParams.recipeId
       Recipe.get({recipeId: $routeParams.recipeId},
         ( (recipe) -> $scope.recipe = recipe),
-        ( (httpResponse) -> $scope.recipe = null)
+        ( (httpResponse) -> 
+            $scope.recipe = null
+            flash.error = "There is no recipe with ID #{$routeParams.recipeId}"
+        )
       )
     else
       $scope.recipes = []
