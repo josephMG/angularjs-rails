@@ -44,7 +44,9 @@ describe RecipesController do
       xhr :get, :show, :format => :json, :id => recipe_id
     end
     
-    subject(:results) { JSON.parse(response.body) }
+    subject(:results) { 
+      JSON.parse(response.body) 
+    }
 
     context "when the recipe exists" do
       let(:recipe) {
