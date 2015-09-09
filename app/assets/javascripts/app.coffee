@@ -6,8 +6,13 @@ receta = angular.module('receta',[
   'angular-flash.service',
   'angular-flash.flash-alert-directive'
 ])
-receta.config([ '$routeProvider',
-    ($routeProvider)->
+receta.config([ '$routeProvider', 'flashProvider',
+    ($routeProvider, flashProvider)->
+      flashProvider.errorClassnames.push("alert-danger")
+      flashProvider.warnClassnames.push("alert-warn")
+      flashProvider.infoClassnames.push("alert-info")
+      flashProvider.successClassnames.push("alert-success")
+      
       $routeProvider
         .when('/', 
           templateUrl: "index.html"
