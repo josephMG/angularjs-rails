@@ -1,12 +1,38 @@
 describe "RecipesController", ->
   scope       = null
   ctrl        = null
-  location    = null
   routeParams = null
-  resource    = null
-  
+  location = null
   httpBackend = null
+  
+  recipeId = 42
 
+  fakeRecipe = 
+    id: recipeId
+    name:"Baked Potatoes"
+    instruections: "Pierce potato with fork, nuke for 20 minutes"
+  
+  setupController2 = (recipeExists = true) ->
+    inject(($location,$routeParams, $rootScope, $httpBackend, $controller) -> 
+      scope       = $rootScope.$new()
+      httpBackend = $httpBackend
+      location = $location
+      routeParams = $routeParams
+      routeParams.recipeId = recipeId
+      
+      request = new RegExp("\/recipes/#{recipeId}")
+      
+      results = if recipeExists
+        [200, fakeRecipe]
+      else
+        [404]
+      
+      httpBackend.expectGET(request).respond(results[0],results[1])
+      
+      ctrl        = $controller('RecipesController',
+                                $scope: scope)
+    )
+  
   setupController = (keywords, results) ->
     inject(($location, $routeParams, $rootScope, $resource, $httpBackend, $controller) -> 
       scope       = $rootScope.$new()
@@ -25,7 +51,8 @@ describe "RecipesController", ->
                                 $scope: scope
                                 $location: location)
     )
-  
+ 
+
   afterEach ->
     httpBackend.verifyNoOutstandingExpectation()
     httpBackend.verifyNoOutstandingRequest()
@@ -33,9 +60,21 @@ describe "RecipesController", ->
   beforeEach(module("receta"))
 
   describe 'controller initialization', ->
+    describe 'recipe is found', ->
+      beforeEach(setupController2())
+      it 'loads the given recipe', ->
+        httpBackend.flush()
+        expect(scope.recipe).toEqualData(fakeRecipe)
+    describe 'recipe is not found', ->
+      beforeEach(setupController2(false))
+      it 'loads the given recipe', ->
+        httpBackend.flush()
+        expect(scope.recipe).toBe(null)
+        #what else?!
+
     describe 'when no keywords present', ->
       beforeEach ->
-        setupController()
+        setupController(null,null)
  
       it 'defaults to no recipes', ->
         expect(scope.recipes).toEqualData([])
@@ -61,7 +100,7 @@ describe "RecipesController", ->
  
   describe 'search()', ->
     beforeEach ->
-      setupController()
+      setupController(null,null)
     
     it 'redirects to itself with a keyword param', ->
       keywords = 'foo'
