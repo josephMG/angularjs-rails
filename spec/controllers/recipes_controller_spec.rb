@@ -40,6 +40,7 @@ describe RecipesController do
   end
   
   describe 'show' do
+    render_views
     before do
       xhr :get, :show, :format => :json, :id => recipe_id
     end
