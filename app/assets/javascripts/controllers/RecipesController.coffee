@@ -30,7 +30,6 @@ controllers.controller("RecipesController", [ '$scope', '$routeParams', '$locati
     $scope.search = (keywords) ->  $location.path("/").search('keywords',keywords)
     $scope.view = (recipeId) -> $location.path("/recipes/#{recipeId}")
     $scope.back = -> $location.path("/")
-    
     $scope.edit = -> $location.path("/recipes/#{$scope.recipe.id}/edit")
     $scope.cancel = -> 
       if $scope.recipe.id
@@ -53,4 +52,7 @@ controllers.controller("RecipesController", [ '$scope', '$routeParams', '$locati
     $scope.delete = ->
       $scope.recipe.$delete()
       $scope.back()
+
+    $scope.newRecipe = -> $location.path("/recipes/new")
+    $scope.edit = (recipeId)-> $location.path("/recipes/#{recipeId}/edit")
 ])

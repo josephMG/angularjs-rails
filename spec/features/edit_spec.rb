@@ -28,7 +28,7 @@ feature "Creating, editing, and deleting a recipe", js: true do
     fill_in "keywords", with: "Roasted"
     click_on "Search"
 
-    click_on "roasted Brussel Sprouts"
+    click_on "Roasted Brussel Sprouts"
 
     click_on "Delete"
 
