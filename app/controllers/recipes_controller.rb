@@ -3,8 +3,9 @@ class RecipesController < ApplicationController
     @recipes = if params[:keywords]
                  Recipe.where('name ilike ?',"%#{params[:keywords]}%")
                else
-                 []
+                 Recipe.all
                end
+    logger.info @recipes
   end
   def show
     @recipe = Recipe.find(params[:id])
